@@ -1,1 +1,2 @@
 # MediBook
+MediBook is a web-based application for managing appointments between doctors and patients. Developed using ASP.NET Core and C#, this application aims to provide an efficient and user-friendly platform for scheduling, canceling, and rescheduling appointments. With MediBook, patients can easily book appointments with their preferred doctors, and doctors can manage their schedules with ease.

@@ -1,49 +1,52 @@
-﻿using MediBook.Models.ViewModels;
+﻿using MediBook.Models;
+using MediBook.Models.ViewModels;
+using MediBook.Utility;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MediBook.Services
 {
     public class AppointmentService : IAppointmentService
     {
-        public Task<int> AddUpdate(AppointmentVM model)
+
+        private readonly ApplicationDbContext _db;
+
+        public AppointmentService(ApplicationDbContext db)
         {
-            throw new System.NotImplementedException();
+            _db = db;
         }
 
-        public Task<int> ConfirmEvent(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<int> Delete(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public List<AppointmentVM> DoctorsEventsById(string doctorId)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AppointmentVM GetById(int id)
-        {
-            throw new System.NotImplementedException();
-        }
 
         public List<DoctorVM> GetDoctorList()
         {
-            throw new System.NotImplementedException();
+            var doctors = (from user in _db.Users
+                           join userRoles in _db.UserRoles on user.Id equals userRoles.UserId
+                           join roles in _db.Roles.Where(x => x.Name == Helper.Doctor) on userRoles.RoleId equals roles.Id
+                           select new DoctorVM
+                           {
+                               Id = user.Id,
+                               Name = user.Name
+                           }
+                           ).ToList();
+
+            return doctors;
         }
 
         public List<PatientVM> GetPatientList()
         {
-            throw new System.NotImplementedException();
-        }
+            var patients = (from user in _db.Users
+                            join userRoles in _db.UserRoles on user.Id equals userRoles.UserId
+                            join roles in _db.Roles.Where(x => x.Name == Helper.Patient) on userRoles.RoleId equals roles.Id
+                            select new PatientVM
+                            {
+                                Id = user.Id,
+                                Name = user.Name
+                            }
+                           ).ToList();
 
-        public List<AppointmentVM> PatientsEventsById(string patientId)
-        {
-            throw new System.NotImplementedException();
+            return patients;
         }
     }
 }

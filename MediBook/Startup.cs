@@ -27,12 +27,12 @@ namespace MediBook
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //Db context configuration
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-          
-            services.AddTransient<IAppointmentService, AppointmentService>();
-            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddDbContext<ApplicationDbContext>
+                (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddControllersWithViews();
 
+
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,13 +52,9 @@ namespace MediBook
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseAuthentication();
-
-
-       
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -67,4 +63,5 @@ namespace MediBook
             });
         }
     }
+
 }

@@ -10,7 +10,6 @@ namespace MediBook.Services
 {
     public class AppointmentService : IAppointmentService
     {
-
         private readonly ApplicationDbContext _db;
 
         public AppointmentService(ApplicationDbContext db)
@@ -22,11 +21,9 @@ namespace MediBook.Services
         public List<DoctorVM> GetDoctorList()
         {
             var doctors = (from user in _db.Users
-                           join userRoles in _db.UserRoles on user.Id equals userRoles.UserId
-                           join roles in _db.Roles.Where(x => x.Name == Helper.Doctor) on userRoles.RoleId equals roles.Id
                            select new DoctorVM
                            {
-                               Id = user.Id,
+                               Id = Convert.ToInt32(user.Id),
                                Name = user.Name
                            }
                            ).ToList();
@@ -36,17 +33,7 @@ namespace MediBook.Services
 
         public List<PatientVM> GetPatientList()
         {
-            var patients = (from user in _db.Users
-                            join userRoles in _db.UserRoles on user.Id equals userRoles.UserId
-                            join roles in _db.Roles.Where(x => x.Name == Helper.Patient) on userRoles.RoleId equals roles.Id
-                            select new PatientVM
-                            {
-                                Id = user.Id,
-                                Name = user.Name
-                            }
-                           ).ToList();
-
-            return patients;
+            throw new NotImplementedException();
         }
     }
 }
